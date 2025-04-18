@@ -1,16 +1,15 @@
-import { useState } from 'react'
-import './App.css'
+import LandingPage from "./views/Landing/LandingPage";
+import { Page } from "./components/Pages";
+import "./App.css";
 
 function App() {
-  
-  const [count, setCount] = useState(0)
-
+  // const [count, setCount] = useState(0);
 
   return (
-    <div className="text-black">
-      hello word
-    </div>
-  )
+    <Page>
+      <LandingPage />
+    </Page>
+  );
 }
 
-export default App
+export default App;
