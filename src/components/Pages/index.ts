@@ -1,2 +1,3 @@
 import Page from "./Page";
-export { Page };
+import PageHeader from "./PageHeader";
+export { Page, PageHeader };

@@ -1,17 +1,10 @@
-import { Button } from "./components/Button/Button";
-import LandingPage from "./views/Landing/LandingPage";
-import { Page } from "./components/Pages";
+import Home from "@/views/Home";
 import "./App.css";
-import PrivateNav from "./components/Navigation/PrivateNav";
 
 function App() {
   // const [count, setCount] = useState(0);
 
-  return (
-    <Page>
-      <PrivateNav/>
-    </Page>
-  );
+  return <Home />;
 }
 
 export default App;
