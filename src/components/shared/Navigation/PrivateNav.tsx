@@ -1,6 +1,6 @@
 import React from "react";
 import { Home, Users, Briefcase, MessageSquare, Bell } from "lucide-react";
-import PageHeader from "../Pages/PageHeader";
+import PageHeader from "../Layout/PageHeader";
 
 const PrivateNav = () => {
   const navItems = [
