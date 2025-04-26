@@ -1,5 +1,5 @@
-import { Page } from "@/components/Pages";
-import CardPost from "@/components/Card/CardPost";
+import { Page } from "@/components/shared/Layout";
+import CardPost from "@/views/Home/sections/CardPost";
 import {
   Dialog,
   DialogContent,
@@ -7,16 +7,17 @@ import {
   DialogHeader,
   DialogTitle,
   DialogDescription,
-} from "@/components/Modal/Dialog";
-import CardProfile from "@/components/Card/CardProfile";
+} from "@/components/ui/Dialog";
+import CardProfile from "./sections/CardProfile";
+import CardConnectionRecomendation from "./sections/CardConnectionRecomendation";
 
 const Index = () => {
   return (
     <Page>
-      <div className="flex flex-col w-full min-h-[100dvh] justify-center sm:max-w-[85rem] border-x border-dashed border-neutral-400">
-        <div className=" grid grid-cols-4 w-full gap-3">
-          <div>
-            <CardProfile/>
+      <div className="flex flex-col w-full min-h-[100dvh] justify-center sm:max-w-[85rem] border-x border-dashed border-neutral-400 px-10">
+        <div className=" grid grid-cols-4 w-full mx-auto">
+          <div className="p-4 ">
+            <CardProfile />
           </div>
           <div className="col-span-2 col-start-2 w-full">
             <div className="flex flex-1 flex-col items-center p-4 gap-4 ">
@@ -40,8 +41,8 @@ const Index = () => {
               ))}
             </div>
           </div>
-          <div>
-            <CardPost />
+          <div className="p-4">
+            <CardConnectionRecomendation />
           </div>
         </div>
       </div>

@@ -1,8 +1,8 @@
-import { Avatar, AvatarImage } from "@/components/Avatar/Avatar";
+import { Avatar, AvatarImage } from "@/components/ui/Avatar";
 
-import { Card, CardContent, CardHeader } from "@/components/Card/Card";
+import { Card, CardContent, CardHeader } from "@/components/ui/Card";
 import { Globe, Bookmark, Heart } from "lucide-react";
-import { Badge } from "@/components/Badge/Badge";
+import { Badge } from "@/components/ui/Badge";
 
 const CardPost = () => {
   return (
