@@ -1,6 +1,8 @@
 import { Avatar, AvatarImage } from "@/components/ui/Avatar";
-import { Card, CardContent } from "@/components/ui/Card";
+import { Card, CardContent, CardFooter } from "@/components/ui/Card";
+import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
+import { Send, Bookmark, MessageSquare } from "lucide-react";
 
 export default function CardWritePost() {
   return (
@@ -17,13 +19,34 @@ export default function CardWritePost() {
           />
         </div>
 
-        <h3 className="text-lg font-semibold text-neutral-900">
-          Looking for a Frontend Engineer for an E-commerce Dashboard
-        </h3>
-        <p className="text-sm text-neutral-700">
-          I’m looking for a skilled frontend developer with experience in React
-        </p>
       </CardContent>
+      <CardFooter className="pb-2 justify-around px-10 pt-1">
+        <div className="flex w-full gap-x-20">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="flex-1 flex items-center gap-1 text-sm text-muted-foreground hover:text-black"
+          >
+            <Bookmark className="w-4 h-4" />
+            Save
+          </Button>
+          <Button
+            size="sm"
+            className="flex-1 flex items-center gap-1 text-sm bg-primary text-white hover:bg-primary/90"
+          >
+            <Send className="w-4 h-4" />
+            Post
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="flex-1 flex items-center gap-1 text-sm text-muted-foreground hover:text-black"
+          >
+            <MessageSquare className="w-4 h-4" />
+            Message
+          </Button>
+        </div>
+      </CardFooter>
     </Card>
   );
 }
