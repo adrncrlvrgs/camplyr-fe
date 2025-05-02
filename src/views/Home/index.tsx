@@ -10,17 +10,21 @@ import {
 } from "@/components/ui/Dialog";
 import CardProfile from "./sections/CardProfile";
 import CardConnectionRecomendation from "./sections/CardConnectionRecomendation";
+import CardAnalytics from "./sections/CardAnalytics";
+import CardWritePost from "./sections/CardWritePost";
 
 const Index = () => {
   return (
     <Page>
       <div className="flex flex-col w-full min-h-[100dvh] justify-center sm:max-w-[85rem] border-x border-dashed border-neutral-400 px-10">
         <div className=" grid grid-cols-4 w-full mx-auto">
-          <div className="p-4 ">
+          <div className=" flex flex-col p-4 gap-3">
             <CardProfile />
+            <CardAnalytics/>
           </div>
           <div className="col-span-2 col-start-2 w-full">
             <div className="flex flex-1 flex-col items-center p-4 gap-4 ">
+              <CardWritePost/>
               {[1, 2, 3].map((_, key) => (
                 <Dialog key={key}>
                   <DialogTrigger asChild>
