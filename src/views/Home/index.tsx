@@ -16,15 +16,19 @@ import CardWritePost from "./sections/CardWritePost";
 const Index = () => {
   return (
     <Page>
-      <div className="flex flex-col w-full min-h-[100dvh] justify-center sm:max-w-[85rem] border-x border-dashed border-neutral-400 px-10">
+      <div className="flex flex-col w-full min-h-dvh justify-center sm:max-w-[85rem] border-x border-dashed border-neutral-400 px-10">
         <div className=" grid grid-cols-4 w-full mx-auto">
           <div className=" flex flex-col p-4 gap-3">
             <CardProfile />
-            <CardAnalytics/>
+            <CardAnalytics />
           </div>
           <div className="col-span-2 col-start-2 w-full">
             <div className="flex flex-1 flex-col items-center p-4 gap-4 ">
-              <CardWritePost/>
+              <CardWritePost />
+              <div className=" w-full px-4">
+                <hr className="border-dashed border-b border-neutral-400 w-full " />
+              </div>
+
               {[1, 2, 3].map((_, key) => (
                 <Dialog key={key}>
                   <DialogTrigger asChild>
