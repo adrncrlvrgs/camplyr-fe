@@ -6,7 +6,7 @@ import { Send, Bookmark, MessageSquare } from "lucide-react";
 
 export default function CardWritePost() {
   return (
-    <Card className="sm:max-w-xl shadow-sm border border-neutral-200 rounded-2xl p-3">
+    <Card className="sm:max-w-xl shadow-sm border border-neutral-200 rounded-2xl p-3 w-full">
       <CardContent className="w-full px-4 pb-4 pt-2 space-y-3">
         <div className="flex flex-row items-center gap-3">
           <Avatar className="size-14">
