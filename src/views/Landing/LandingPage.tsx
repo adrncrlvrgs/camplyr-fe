@@ -122,7 +122,9 @@ export default function LandingPage() {
         </NavigationMenuList>
       </NavigationMenu>
 
-    LANDING PAGE
+    <div>
+      landing page here
+    </div>
     </>
   );
 }
