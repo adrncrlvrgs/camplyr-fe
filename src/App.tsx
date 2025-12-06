@@ -1,6 +1,6 @@
 import Home from "@/views/Home";
-// import LandingPage from "@/views/Landing";
-// import Login from "@/views/Login";
+import LandingPage from "@/views/Landing";
+import Login from "@/views/Login";
 
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import "./App.css";
