@@ -25,10 +25,10 @@ instance.interceptors.response.use(
 
 export type RequestMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
-export async function api<T = any>(
+export async function api<T = unknown>(
   method: RequestMethod,
   url: string,
-  data?: any,
+  data?: unknown,
   options: AxiosRequestConfig = {}
 ): Promise<T> {
   const _options: AxiosRequestConfig = {
@@ -41,6 +41,7 @@ export async function api<T = any>(
   else _options.data = data;
 
   const response: T = await instance(_options);
+  console.log(response);
 
   return response;
 }

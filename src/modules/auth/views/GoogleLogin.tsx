@@ -1,19 +1,26 @@
-import { GoogleLogin, useGoogleLogin } from "@react-oauth/google";
-import { useState } from "react";
+import { useGoogleLoginHook } from "../hooks/useGoogleLogin";
+import { GoogleLogin } from "@react-oauth/google";
+import type { CredentialResponse } from "@react-oauth/google";
 
 export default function GoogleLoginButton() {
-  const clientId  = import.meta.env.VITE_APP_GOOGLE_CLIENT_ID;
-
-  const onSuccess =(response) => {
-    console.log("Login Success", response.profileObj);
-  }
+  const { error, userGoogleLog2 } = useGoogleLoginHook(() => {
+    // optional callback after successful login
+  });
 
   return (
-    <div>
+    <div className="space-y-2">
+      {/* <button onClick={() => googleLogin()} className="w-full">
+        Sign in with Google
+      </button>
+      {error ? <p className="text-sm text-destructive">{error.message}</p> : null} */}
       <GoogleLogin
-        clientId={clientId}
-        onSuccess={onSuccess}
+        onSuccess={async (response: CredentialResponse) => {
+          await userGoogleLog2(response);
+        }}
+        onError={() => console.error(error)}
+        // onError={() => console.error("Login Failed")}
       />
+      {error ? <p className="text-sm text-destructive">{error.message}</p> : null} 
     </div>
   );
 }
