@@ -1,8 +1,5 @@
 import { cn } from "@/utils/lib/utils";
-import { Button } from "@/components/ui/Button";
 import { Card, CardContent } from "@/components/ui/Card";
-import { Input } from "@/components/ui/Input";
-import { Label } from "@/components/ui/Label";
 import gif from "@/assets/camplyr.gif";
 import GoogleLoginButton from "../../modules/auth/views/GoogleLogin";
 

@@ -4,12 +4,14 @@ import Login from "@/views/Login";
 
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import "./App.css";
+import { AuthProvider } from "./context/AuthContext";
 
 function App() {
-
   return (
     <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
-      <Login />
+      <AuthProvider>
+        <Home />
+      </AuthProvider>
     </GoogleOAuthProvider>
   );
 }

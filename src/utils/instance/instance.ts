@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 
 const apiUrl = import.meta.env.VITE_APP_API_BASE_URL;
 
-const getToken = () => Cookies.get("token");
+const getToken = () => Cookies.get("accessToken");
 
 const instance: AxiosInstance = axios.create({
   baseURL: apiUrl,
@@ -13,14 +13,15 @@ const instance: AxiosInstance = axios.create({
 });
 
 instance.interceptors.request.use((request) => {
-  if (getToken) request.headers.Authorization = `Bearer ${getToken()}`;
-
+  if (getToken()) {
+    request.headers.Authorization = `Bearer ${getToken()}`;
+  }
   return request;
 });
 
 instance.interceptors.response.use(
   (response: AxiosResponse) => response.data,
-  (error) => Promise.reject(error)
+  (error) => Promise.reject(error),
 );
 
 export type RequestMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
@@ -29,7 +30,7 @@ export async function api<T = unknown>(
   method: RequestMethod,
   url: string,
   data?: unknown,
-  options: AxiosRequestConfig = {}
+  options: AxiosRequestConfig = {},
 ): Promise<T> {
   const _options: AxiosRequestConfig = {
     method,
@@ -41,7 +42,6 @@ export async function api<T = unknown>(
   else _options.data = data;
 
   const response: T = await instance(_options);
-  console.log(response);
 
   return response;
 }

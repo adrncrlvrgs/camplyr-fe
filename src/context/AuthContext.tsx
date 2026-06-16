@@ -1,11 +1,71 @@
-import {createContext, useContext, useEffect, useState } from "react";
-import Cookies from "js-cookie";
+import { createContext, useContext, useState, ReactNode } from "react";
+// import {useNavigate} from 'react-router-dom'
+import { User } from "@/utils/constant/types";
 
-const AuthContext = createContext({})
-
-
-const AuthProvider = () => {
- return(
-  <></>
- );
+type AuthContextValue = {
+  user: User | null;
+  login: (userData: User | null) => void;
 };
+
+type AuthProviderProps = {
+  children: ReactNode;
+};
+
+const AuthContext = createContext<AuthContextValue | undefined>(undefined);
+
+const AuthProvider = ({ children }: AuthProviderProps) => {
+  const [user, setUser] = useState<User | null>(null);
+  // const navigate = useNavigate();
+  const login = (userData: User | null) => {
+    setUser(userData);
+    console.log(userData);
+    // if (!user.isOnboarded){
+    //     navigate("/onboarding")
+    // }
+
+  };
+
+  return (
+    <AuthContext.Provider value={{ user, login }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+const useAuth = (): AuthContextValue => {
+  const context = useContext(AuthContext);
+
+  if (!context) {
+    throw new Error("useAuth must be used inside AuthProvider");
+  }
+
+  return context;
+};
+
+export { AuthProvider, AuthContext, useAuth };
+
+
+// type AuthContextValue = {
+//   user: unknown | null;
+//   login: (userData: object) => void;
+// };
+
+// type AuthProviderProps = {
+//   children: React.ReactNode;
+// };
+
+// const AuthContext = createContext<AuthContextValue | null>(null);
+
+// const AuthProvider = ({ children }: AuthProviderProps) => {
+//   const [user, setUser] = useState<unknown | null>(null);
+
+//   const login = (userData: object) => {
+//     setUser(userData);
+//   };
+
+//   return (
+//     <AuthContext.Provider value={{ user, login }}>
+//       {children}
+//     </AuthContext.Provider>
+//   );
+// };
