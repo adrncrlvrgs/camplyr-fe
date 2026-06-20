@@ -3,6 +3,8 @@ export interface User {
   email: string;
   name: string;
   avatarUrl?: string;
-  role: string;
+  role: UserRole;
   isOnboarded: boolean;
 }
+
+export type UserRole = "SEEKER" | "RECRUITER" | "ADMIN";

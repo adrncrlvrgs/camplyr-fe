@@ -1,9 +1,11 @@
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 // import {useNavigate} from 'react-router-dom'
 import { User } from "@/utils/constant/types";
 
 type AuthContextValue = {
   user: User | null;
+  // isOnboarded: boolean;
+  isLoading: boolean;
   login: (userData: User | null) => void;
 };
 
@@ -15,7 +17,14 @@ const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
 const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  // const [isOnboarded, setIsOnboarded] = useState<boolean>(false);
   // const navigate = useNavigate();
+  useEffect(() => {
+    setIsLoading(false);
+  },[])
+
+ 
   const login = (userData: User | null) => {
     setUser(userData);
     console.log(userData);
@@ -26,7 +35,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login }}>
+    <AuthContext.Provider value={{ user, isLoading, login }}>
       {children}
     </AuthContext.Provider>
   );
