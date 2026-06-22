@@ -1,4 +1,4 @@
-import { LoginForm } from "./LoginForm"
+import { LoginForm } from "./LoginPage"
 
 export default function Index() {
   return (
