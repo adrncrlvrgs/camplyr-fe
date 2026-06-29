@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 // import {useNavigate} from 'react-router-dom'
 import { User } from "@/utils/constant/types";
+import { getUser, refresh } from "@/utils/api/auth";
 
 type AuthContextValue = {
   user: User | null;
@@ -34,6 +35,36 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
   };
 
+  const refreshAuth = async () => {
+
+    try {
+      const {userData} = await getUser() as ({userData: User});
+      setUser(userData)
+    }catch(error){
+      try{
+        refresh();
+        const {userData} = await getUser() as ({userData: User});
+        setUser(userData);
+      }catch{
+        setUser(null);
+      }
+      console.log("Refresh error:", error);
+    }
+  }
+
+  useEffect(()=>{
+    const initialAuth = async() =>{
+      setIsLoading(true)
+      try{
+        await refreshAuth();
+      }finally{
+        setIsLoading(false);
+      }
+    }
+
+    initialAuth();
+  })
+
   return (
     <AuthContext.Provider value={{ user, isLoading, login }}>
       {children}
@@ -53,28 +84,3 @@ const useAuth = (): AuthContextValue => {
 
 export { AuthProvider, AuthContext, useAuth };
 
-
-// type AuthContextValue = {
-//   user: unknown | null;
-//   login: (userData: object) => void;
-// };
-
-// type AuthProviderProps = {
-//   children: React.ReactNode;
-// };
-
-// const AuthContext = createContext<AuthContextValue | null>(null);
-
-// const AuthProvider = ({ children }: AuthProviderProps) => {
-//   const [user, setUser] = useState<unknown | null>(null);
-
-//   const login = (userData: object) => {
-//     setUser(userData);
-//   };
-
-//   return (
-//     <AuthContext.Provider value={{ user, login }}>
-//       {children}
-//     </AuthContext.Provider>
-//   );
-// };
