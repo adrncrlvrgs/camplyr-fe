@@ -4,6 +4,7 @@ import {
   useState,
   useEffect,
   ReactNode,
+  useCallback
 } from "react";
 // import {useNavigate} from 'react-router-dom'
 import { User } from "@/utils/constant/types";
@@ -27,39 +28,26 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  useEffect(() => {
-    const initialAuth = async () => {
-      setIsLoading(true);
-      try {
-        await refreshAuth();
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    initialAuth();
-  }, []);
 
   const login = (userData: User | null) => {
     setUser(userData);
     console.log(userData);
   };
 
-  const refreshAuth = async () => {
+  const refreshAuth = useCallback(async () => {
     try {
       const { userData } = (await getUser()) as { userData: User };
       setUser(userData);
-    } catch (error) {
+    } catch {
       try {
-        refresh();
+        await refresh();
         const { userData } = (await getUser()) as { userData: User };
         setUser(userData);
       } catch {
         setUser(null);
       }
-      console.log("Refresh error:", error);
     }
-  };
+  },[]);
 
   const authLogout = async () => {
     try{
@@ -68,6 +56,20 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
       setUser(null);
     }
   }
+
+  useEffect(() => {
+    const initialAuth = async () => {
+    setIsLoading(true);
+
+    try {
+      await refreshAuth();
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  initialAuth();
+}, [refreshAuth]);
 
   return (
     <AuthContext.Provider value={{ user, isLoading, login, authLogout }}>
