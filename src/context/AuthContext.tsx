@@ -8,7 +8,7 @@ import {
 } from "react";
 // import {useNavigate} from 'react-router-dom'
 import { User } from "@/utils/constant/types";
-import { getUser, refresh,logout } from "@/utils/api/auth";
+import { getUser, refresh,logout } from "@/utils/api/auth.api";
 
 type AuthContextValue = {
   user: User | null;
