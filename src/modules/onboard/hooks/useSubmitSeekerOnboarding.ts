@@ -1,6 +1,7 @@
 // src/hooks/useSubmitSeekerOnboarding.ts
 
 import { Dispatch, SetStateAction, useState } from "react";
+import { onboardSeeker } from "@/utils/api/onboard.api";
 
 import {
   seekerOnboardingSchema,
@@ -57,7 +58,7 @@ export function useSubmitSeekerOnboarding({
 
       console.log(payload);
 
-      // await api.patch("/users/onboarding", payload);
+      await onboardSeeker(payload);
     } finally {
       setIsSubmitting(false);
     }
