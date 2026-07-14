@@ -10,6 +10,7 @@ import {
 import { User } from "@/utils/constant/types";
 import { getUser, refresh,logout } from "@/utils/api/auth.api";
 
+
 type AuthContextValue = {
   user: User | null;
   // isOnboarded: boolean;
@@ -73,6 +74,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
   return (
     <AuthContext.Provider value={{ user, isLoading, login, authLogout }}>
+      <button onClick={ () => authLogout()}>logout</button>
       {children}
     </AuthContext.Provider>
   );

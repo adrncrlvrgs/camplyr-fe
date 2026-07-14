@@ -56,7 +56,7 @@ export function useSubmitSeekerOnboarding({
           .filter(Boolean),
       };
 
-      console.log(payload);
+      // console.log(payload);
 
       await onboardSeeker(payload);
     } finally {
