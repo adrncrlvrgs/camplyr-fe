@@ -4,12 +4,11 @@ import {
   useState,
   useEffect,
   ReactNode,
-  useCallback
+  useCallback,
 } from "react";
 // import {useNavigate} from 'react-router-dom'
 import { User } from "@/utils/constant/types";
-import { getUser, refresh,logout } from "@/utils/api/auth.api";
-
+import { getUser, refresh, logout } from "@/utils/api/auth.api";
 
 type AuthContextValue = {
   user: User | null;
@@ -29,7 +28,6 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-
   const login = (userData: User | null) => {
     setUser(userData);
     console.log(userData);
@@ -48,33 +46,33 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         setUser(null);
       }
     }
-  },[]);
+  }, []);
 
   const authLogout = async () => {
-    try{
-      await logout()
-    }finally{
-      setUser(null);
-    }
-  }
-
-  useEffect(() => {
-    const initialAuth = async () => {
-    setIsLoading(true);
-
     try {
-      await refreshAuth();
+      await logout();
     } finally {
-      setIsLoading(false);
+      setUser(null);
     }
   };
 
-  initialAuth();
-}, [refreshAuth]);
+  useEffect(() => {
+    const initialAuth = async () => {
+      setIsLoading(true);
+
+      try {
+        await refreshAuth();
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    initialAuth();
+  }, [refreshAuth]);
 
   return (
     <AuthContext.Provider value={{ user, isLoading, login, authLogout }}>
-      <button onClick={ () => authLogout()}>logout</button>
+      <button onClick={() => authLogout()}>logout</button>
       {children}
     </AuthContext.Provider>
   );

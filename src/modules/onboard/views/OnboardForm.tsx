@@ -1,8 +1,6 @@
-// import { Card } from "@/components/ui/Card";
-// import React from "react";
-
 import { useState } from "react";
 import SeekerOnboarding from "./SeekerForm";
+import { RecruiterForm } from "./RecruiterFor";
 
 export function OnboardForm() {
   const [roleAs, setRoleAs] = useState<string>("");
@@ -42,6 +40,9 @@ export function OnboardForm() {
 
       {roleAs === "SEEKER" && (
         <SeekerOnboarding/>
+      )}
+      {roleAs === "RECRUITER" && (
+        <RecruiterForm/>
       )}
     </>
     
