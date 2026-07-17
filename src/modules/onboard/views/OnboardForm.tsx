@@ -1,6 +1,6 @@
 import { useState } from "react";
 import SeekerOnboarding from "./SeekerForm";
-import { RecruiterForm } from "./RecruiterFor";
+import { RecruiterForm } from "./RecruiterForm";
 
 export function OnboardForm() {
   const [roleAs, setRoleAs] = useState<string>("");
