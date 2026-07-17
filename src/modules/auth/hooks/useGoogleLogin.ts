@@ -1,6 +1,6 @@
 import { useState } from "react";
 //import { useGoogleLogin } from "@react-oauth/google";
-import { loginUserGoogle } from "@/utils/api/auth";
+import { loginUserGoogle } from "@/utils/api/auth.api";
 //import type { TokenResponse } from "@react-oauth/google";
 import type { CredentialResponse } from "@react-oauth/google";
 import { User } from "@/utils/constant/types";

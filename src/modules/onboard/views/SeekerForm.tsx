@@ -1,13 +1,15 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
+import { FormError } from "@/components/ui/FormError";
 
-type SeekerForm = {
-  headline: string;
-  location: string;
-  bio: string;
-  skills: string;
-};
+import {
+  seekerOnboardingSchema,
+  SeekerForm,
+} from "@/utils/validation/validation.schema";
+
+import { validateForm, FormErrors } from "@/utils/validation/validation.util";
+import { useSubmitSeekerOnboarding } from "../hooks/useSubmitSeekerOnboarding";
 
 const initialForm: SeekerForm = {
   headline: "",
@@ -16,11 +18,26 @@ const initialForm: SeekerForm = {
   skills: "",
 };
 
+const stepFields: (keyof SeekerForm)[] = [
+  "headline",
+  "location",
+  "bio",
+  "skills",
+];
+
 export default function SeekerOnboarding() {
   const [step, setStep] = useState(0);
   const [form, setForm] = useState<SeekerForm>(initialForm);
+  const [errors, setErrors] = useState<FormErrors<SeekerForm>>({});
 
-  const totalSteps = 4;
+  const totalSteps = stepFields.length;
+
+  const { submitOnboarding, isSubmitting } = useSubmitSeekerOnboarding({
+    form,
+    stepFields,
+    setErrors,
+    setStep,
+  });
 
   const updateField = <K extends keyof SeekerForm>(
     field: K,
@@ -30,9 +47,44 @@ export default function SeekerOnboarding() {
       ...prev,
       [field]: value,
     }));
+
+    setErrors((prev) => ({
+      ...prev,
+      [field]: undefined,
+    }));
+  };
+
+  const validateCurrentStep = () => {
+    const result = validateForm(seekerOnboardingSchema, form);
+
+    const currentField = stepFields[step];
+
+    if (!currentField) {
+      setErrors({});
+      return true;
+    }
+
+    if (!result.success) {
+      const currentFieldError = result.errors[currentField];
+
+      if (currentFieldError) {
+        setErrors({
+          [currentField]: currentFieldError,
+        } as FormErrors<SeekerForm>);
+
+        return false;
+      }
+    }
+
+    setErrors({});
+    return true;
   };
 
   const nextStep = () => {
+    const isValid = validateCurrentStep();
+
+    if (!isValid) return;
+
     if (step < totalSteps - 1) {
       setStep((prev) => prev + 1);
     }
@@ -40,22 +92,9 @@ export default function SeekerOnboarding() {
 
   const prevStep = () => {
     if (step > 0) {
+      setErrors({});
       setStep((prev) => prev - 1);
     }
-  };
-
-  const submitOnboarding = async () => {
-    const payload = {
-      role: "SEEKER",
-      headline: form.headline,
-      location: form.location,
-      bio: form.bio,
-      skills: form.skills.split(",").map((skill) => skill.trim()),
-    };
-
-    console.log(payload);
-
-    // await api.patch("/users/onboarding", payload);
   };
 
   return (
@@ -85,11 +124,15 @@ export default function SeekerOnboarding() {
               </p>
             </div>
 
-            <Input
-              placeholder="Example: Frontend Developer"
-              value={form.headline}
-              onChange={(e) => updateField("headline", e.target.value)}
-            />
+            <div className="space-y-2">
+              <Input
+                placeholder="Example: Frontend Developer"
+                value={form.headline}
+                onChange={(e) => updateField("headline", e.target.value)}
+              />
+
+              <FormError message={errors.headline} />
+            </div>
           </div>
         )}
 
@@ -102,11 +145,15 @@ export default function SeekerOnboarding() {
               </p>
             </div>
 
-            <Input
-              placeholder="Example: Quezon City, Philippines"
-              value={form.location}
-              onChange={(e) => updateField("location", e.target.value)}
-            />
+            <div className="space-y-2">
+              <Input
+                placeholder="Example: Quezon City, Philippines"
+                value={form.location}
+                onChange={(e) => updateField("location", e.target.value)}
+              />
+
+              <FormError message={errors.location} />
+            </div>
           </div>
         )}
 
@@ -119,12 +166,17 @@ export default function SeekerOnboarding() {
               </p>
             </div>
 
-            <textarea
-              placeholder="Example: I am a frontend developer who enjoys building clean and user-friendly web apps."
-              value={form.bio}
-              onChange={(e) => updateField("bio", e.target.value)}
-              rows={5}
-            />
+            <div className="space-y-2">
+              <textarea
+                className="min-h-[120px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                placeholder="Example: I am a frontend developer who enjoys building clean and user-friendly web apps."
+                value={form.bio}
+                onChange={(e) => updateField("bio", e.target.value)}
+                rows={5}
+              />
+
+              <FormError message={errors.bio} />
+            </div>
           </div>
         )}
 
@@ -137,23 +189,35 @@ export default function SeekerOnboarding() {
               </p>
             </div>
 
-            <Input
-              placeholder="React, TypeScript, Tailwind, NodeJS"
-              value={form.skills}
-              onChange={(e) => updateField("skills", e.target.value)}
-            />
+            <div className="space-y-2">
+              <Input
+                placeholder="React, TypeScript, Tailwind, NodeJS"
+                value={form.skills}
+                onChange={(e) => updateField("skills", e.target.value)}
+              />
+
+              <FormError message={errors.skills} />
+            </div>
           </div>
         )}
 
         <div className="mt-8 flex items-center justify-between">
-          <Button variant="outline" onClick={prevStep} disabled={step === 0}>
+          <Button
+            variant="outline"
+            onClick={prevStep}
+            disabled={step === 0 || isSubmitting}
+          >
             Back
           </Button>
 
           {step < totalSteps - 1 ? (
-            <Button onClick={nextStep}>Next</Button>
+            <Button onClick={nextStep} disabled={isSubmitting}>
+              Next
+            </Button>
           ) : (
-            <Button onClick={submitOnboarding}>Finish</Button>
+            <Button onClick={submitOnboarding} disabled={isSubmitting}>
+              {isSubmitting ? "Submitting..." : "Finish"}
+            </Button>
           )}
         </div>
       </div>

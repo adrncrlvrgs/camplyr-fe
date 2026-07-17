@@ -4,10 +4,11 @@ import {
   useState,
   useEffect,
   ReactNode,
+  useCallback,
 } from "react";
 // import {useNavigate} from 'react-router-dom'
 import { User } from "@/utils/constant/types";
-import { getUser, refresh,logout } from "@/utils/api/auth";
+import { getUser, refresh, logout } from "@/utils/api/auth.api";
 
 type AuthContextValue = {
   user: User | null;
@@ -27,9 +28,38 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
+  const login = (userData: User | null) => {
+    setUser(userData);
+    console.log(userData);
+  };
+
+  const refreshAuth = useCallback(async () => {
+    try {
+      const { userData } = (await getUser()) as { userData: User };
+      setUser(userData);
+    } catch {
+      try {
+        await refresh();
+        const { userData } = (await getUser()) as { userData: User };
+        setUser(userData);
+      } catch {
+        setUser(null);
+      }
+    }
+  }, []);
+
+  const authLogout = async () => {
+    try {
+      await logout();
+    } finally {
+      setUser(null);
+    }
+  };
+
   useEffect(() => {
     const initialAuth = async () => {
       setIsLoading(true);
+
       try {
         await refreshAuth();
       } finally {
@@ -38,39 +68,11 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     };
 
     initialAuth();
-  }, []);
-
-  const login = (userData: User | null) => {
-    setUser(userData);
-    console.log(userData);
-  };
-
-  const refreshAuth = async () => {
-    try {
-      const { userData } = (await getUser()) as { userData: User };
-      setUser(userData);
-    } catch (error) {
-      try {
-        refresh();
-        const { userData } = (await getUser()) as { userData: User };
-        setUser(userData);
-      } catch {
-        setUser(null);
-      }
-      console.log("Refresh error:", error);
-    }
-  };
-
-  const authLogout = async () => {
-    try{
-      await logout()
-    }finally{
-      setUser(null);
-    }
-  }
+  }, [refreshAuth]);
 
   return (
     <AuthContext.Provider value={{ user, isLoading, login, authLogout }}>
+      <button onClick={() => authLogout()}>logout</button>
       {children}
     </AuthContext.Provider>
   );
