@@ -1,6 +1,6 @@
 import { useState } from "react";
 import SeekerOnboarding from "./SeekerForm";
-import { RecruiterForm } from "./RecruiterForm";
+import RecruiterOnboarding from "./RecruiterForm";
 
 export function OnboardForm() {
   const [roleAs, setRoleAs] = useState<string>("");
@@ -42,7 +42,7 @@ export function OnboardForm() {
         <SeekerOnboarding/>
       )}
       {roleAs === "RECRUITER" && (
-        <RecruiterForm/>
+        <RecruiterOnboarding/>
       )}
     </>
     
