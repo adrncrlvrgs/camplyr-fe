@@ -39,22 +39,22 @@ export default function SeekerOnboarding() {
     setStep,
   });
 
-  const updateField = <K extends keyof SeekerForm>(
+  const updateField = <K extends keyof SeekerForm>( // K as key of SeekerForm
     field: K,
     value: SeekerForm[K],
   ) => {
-    setForm((prev) => ({
+    setForm((prev) => ({ // papasok nya yung value
       ...prev,
       [field]: value,
     }));
 
-    setErrors((prev) => ({
+    setErrors((prev) => ({ // sset nya lang as ready
       ...prev,
       [field]: undefined,
     }));
   };
 
-  const validateCurrentStep = () => {
+  const validateCurrentStep = () => { //pang validate
     const result = validateForm(seekerOnboardingSchema, form);
 
     const currentField = stepFields[step];

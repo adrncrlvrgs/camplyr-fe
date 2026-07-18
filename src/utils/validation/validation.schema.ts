@@ -8,3 +8,13 @@ export const seekerOnboardingSchema = z.object({
 });
 
 export type SeekerForm = z.infer<typeof seekerOnboardingSchema>;
+
+export const recruiterOnboardSchema = z.object({
+  position: z.string().trim().min(2, "Position is required"),
+  companyName : z.string().trim().min(2, "Company Name is required"),
+  website : z.string().trim().min(2, "Website is required"),
+  location : z.string().trim().min(2, "Website is required"),
+  description : z.string().trim().min(2, "Website is required"),
+});
+
+export type RecruiterForm = z.infer<typeof recruiterOnboardSchema>;
