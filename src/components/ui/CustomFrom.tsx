@@ -1,7 +1,10 @@
 import { FormEvent, ReactNode, useState } from "react";
 import { z } from "zod";
 
-import { validateForm, FormErrors } from "@/utils/validation/validation.util";
+import {
+  validateForm,
+  FormErrors,
+} from "@/utils/validation/validation.util";
 
 type CustomFormState<TValues> = {
   errors: FormErrors<TValues>;
@@ -9,14 +12,22 @@ type CustomFormState<TValues> = {
 
 type CustomFormProps<TSchema extends z.ZodTypeAny> = {
   schema: TSchema;
+
   onSubmit: (
-    data: z.infer<TSchema>,
-    formElement: HTMLFormElement
+    data: z.infer<TSchema>
   ) => void | Promise<void>;
+
   children:
     | ReactNode
     | ((state: CustomFormState<z.infer<TSchema>>) => ReactNode);
+
   className?: string;
+
+  /**
+   * Optional.
+   * Reset the form after a successful submission.
+   */
+  resetOnSuccess?: boolean;
 };
 
 function getFormValues(form: HTMLFormElement) {
@@ -31,7 +42,7 @@ function getFormValues(form: HTMLFormElement) {
     if (key in values) {
       const current = values[key];
 
-      values[key] = Array.isArray(current)// checking if array
+      values[key] = Array.isArray(current)
         ? [...current, value]
         : [current, value];
     } else {
@@ -47,17 +58,19 @@ export function CustomForm<TSchema extends z.ZodTypeAny>({
   onSubmit,
   children,
   className,
+  resetOnSuccess = false,
 }: CustomFormProps<TSchema>) {
-  const [errors, setErrors] = useState<FormErrors<z.infer<TSchema>>>({});
+  const [errors, setErrors] =
+    useState<FormErrors<z.infer<TSchema>>>({});
 
   const handleSubmit = async (
     event: FormEvent<HTMLFormElement>
   ) => {
     event.preventDefault();
 
-    const formElement = event.currentTarget;
+    const form = event.currentTarget;
 
-    const values = getFormValues(formElement);
+    const values = getFormValues(form);
 
     const result = validateForm(schema, values);
 
@@ -66,12 +79,17 @@ export function CustomForm<TSchema extends z.ZodTypeAny>({
       return;
     }
 
-    // Clear previous validation errors
     setErrors({});
 
-    // Let the feature hook handle loading,
-    // API calls, server errors, etc.
-    await onSubmit(result.data, formElement);
+    try {
+      await onSubmit(result.data);
+
+      if (resetOnSuccess) {
+        form.reset();
+      }
+    } catch {
+      // Let the feature hook manage API errors.
+    }
   };
 
   return (
