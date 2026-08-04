@@ -14,6 +14,8 @@ export default function JobsPage() {
         <JobList />
 
         {/* Job Details */}
+        {/* test push */}
+
         <JobDetails/>
         
       </div>
