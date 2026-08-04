@@ -1,6 +1,6 @@
 import { Page } from "@/components/shared/Layout";
 import JobFilters from "./sections/JobFilters";
-import JobList from "./sections/Joblist";
+import JobList from "./sections/JobList";
 import JobDetails from "./sections/JobDetails";
 
 export default function JobsPage() {
