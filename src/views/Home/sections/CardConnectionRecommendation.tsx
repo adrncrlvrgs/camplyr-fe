@@ -7,9 +7,9 @@ import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 
 
-const RecommendationUser = (key: any) => {
+const RecommendationUser = () => {
   return (
-    <div className=" flex flex-1 flex-col" key={key}>
+    <div className=" flex flex-1 flex-col">
       <div className="flex flex-row items-start p-4 pb-0">
         <Avatar className="size-12">
           <AvatarImage src="https://github.com/shadcn.png" />

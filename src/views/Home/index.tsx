@@ -9,7 +9,7 @@ import {
   DialogDescription,
 } from "@/components/ui/Dialog";
 import CardProfile from "./sections/CardProfile";
-import CardConnectionRecomendation from "./sections/CardConnectionRecomendation";
+import CardConnectionRecomendation from "./sections/CardConnectionRecommendation";
 import CardAnalytics from "./sections/CardAnalytics";
 import CardWritePost from "./sections/CardWritePost";
 

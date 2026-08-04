@@ -1,5 +1,4 @@
 import { Avatar, AvatarImage } from "@/components/ui/Avatar";
-
 import { Card, CardContent, CardHeader } from "@/components/ui/Card";
 import { Globe, Bookmark, Heart } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";

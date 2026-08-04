@@ -16,5 +16,5 @@ export function RequireGuest() {
     return <Navigate to="/onboarding" replace />;
   }
 
-//   return <Navigate to="/dashboard" replace />;
+  return <Navigate to="/home" replace />;
 }
