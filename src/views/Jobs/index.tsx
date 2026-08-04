@@ -14,6 +14,9 @@ export default function JobsPage() {
         <JobList />
 
         {/* Job Details */}
+        {/* Job Details */}
+        {/* Job Details */}{/* Job Details */}{/* Job Details */}
+        {/* Job Details */}
         <JobDetails/>
         
       </div>
