@@ -8,6 +8,8 @@ import {
   DialogDescription,
 } from "@/components/ui/Dialog";
 
+import CreateJobForm from "@/modules/jobs/views/CreateJobForm";
+
 export default function JobCreate() {
   return (
     <Dialog>
@@ -26,7 +28,7 @@ export default function JobCreate() {
           Share your thoughts, ideas, or updates.
         </DialogDescription>
 
-        <div className="mt-4">{/* <CreateJobForm /> */}</div>
+        <div className="mt-4"><CreateJobForm /></div>
       </DialogContent>
     </Dialog>
   );
