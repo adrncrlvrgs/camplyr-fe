@@ -25,3 +25,14 @@ export const postSchema = z.object({
 })
 
 export type PostInput = z.infer<typeof postSchema>;
+
+export const jobSchema = z.object({
+  title: z.string().trim().min(2, "Company Name is required"),
+  location: z.string().trim().optional(),
+  description: z.string().trim().min(2, "Description is required"),
+  salaryMin: z.number().int().nonnegative().optional(),
+  salaryMax: z.number().int().nonnegative().optional(),
+
+});
+
+export type CreateJobInput = z.infer<typeof jobSchema>;
