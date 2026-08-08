@@ -6,9 +6,9 @@ import { jobSchema } from "@/utils/validation/validation.schema";
 import { useAddJob } from "../hooks/useAddJob";
 
 export default function CreateJobForm() {
-  const { createPost, isSubmitting, serverError } = useAddJob();
+  const { createJob, isSubmitting, serverError } = useAddJob();
   return (
-    <CustomForm schema={jobSchema}>
+    <CustomForm schema={jobSchema} onSubmit={createJob} resetOnSuccess>
       {({ errors }) => (
         <>
           <CardContent className="w-full px-4 pb-4 pt-2">
