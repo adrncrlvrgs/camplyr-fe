@@ -33,7 +33,7 @@ export default function CreateJobForm() {
                   "
                 />
 
-                <FormError message={errors.content} />
+                <FormError message={errors?.description} />
                 <FormError message={serverError?.message} />
               </div>
             </div>
