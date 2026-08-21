@@ -1,5 +1,6 @@
-const PageHeader = (props: any) => {
-  const { children } = props;
+import type { ReactNode } from 'react';
+
+const PageHeader = ({ children }: { children?: ReactNode }) => {
   return (
     <header className="relative z-50 border-dashed border-b border-neutral-500 flex flex-wrap sm:justify-start sm:flex-nowrap w-full bg-white text-sm dark:bg-neutral-800">
       <nav className="max-w-[85rem] border-dashed border-x border-neutral-500  w-full mx-auto px-4 py-1.5  sm:flex sm:items-center sm:justify-between">
