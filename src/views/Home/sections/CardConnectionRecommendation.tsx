@@ -38,7 +38,7 @@ const RecommendationUser = () => {
   );
 };
 
-const CardConnectionRecomendation = () => {
+const CardConnectionRecommendation = () => {
   return (
     <Card className="sm:max-w-xl shadow-sm border border-neutral-200 rounded-2xl p-3">
       {[1, 2, 3].map((_, key) => (
@@ -48,4 +48,4 @@ const CardConnectionRecomendation = () => {
   );
 };
 
-export default CardConnectionRecomendation;
+export default CardConnectionRecommendation;
