@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/Button";
 import { FormError } from "@/components/ui/FormError";
 import { jobSchema } from "@/utils/validation/validation.schema";
 import { useAddJob } from "../hooks/useAddJob";
+import { Input } from "@/components/ui/Input";
 
 export default function CreateJobForm() {
   const { createJob, isSubmitting, serverError } = useAddJob();
@@ -14,9 +15,12 @@ export default function CreateJobForm() {
           <CardContent className="w-full px-4 pb-4 pt-2">
             <div className="flex gap-3">
               <div className="flex-1">
+                <Input name="title" placeholder="Enter job title" />
+                <FormError message={errors?.title} />
+                <FormError message={serverError?.message} />
                 <textarea
                   name="content"
-                  placeholder="What's on your mind?"
+                  placeholder="About this job..."
                   className="
                     w-full
                     min-h-[120px]
@@ -25,7 +29,6 @@ export default function CreateJobForm() {
                     p-2
                     text-base
                     outline-none
-                    border-none
                     focus:outline-none
                     focus:ring-0
                     focus-visible:ring-0
@@ -35,6 +38,25 @@ export default function CreateJobForm() {
 
                 <FormError message={errors?.description} />
                 <FormError message={serverError?.message} />
+                <Input name="salaryMax" placeholder="Enter Location" />
+                <FormError message={errors?.location} />
+                <FormError message={serverError?.message} />
+                <div className="flex mt-1">
+                  <Input
+                    name="salaryMax"
+                    placeholder="Enter Max Salary Amount"
+                    type="number"
+                  />
+                  <FormError message={errors?.salaryMax} />
+                  <FormError message={serverError?.message} />
+                  <Input
+                    name="salaryMin"
+                    placeholder="Enter Min Salary Amount"
+                    type="number"
+                  />
+                  <FormError message={errors?.salaryMin} />
+                  <FormError message={serverError?.message} />
+                </div>
               </div>
             </div>
           </CardContent>
@@ -46,14 +68,9 @@ export default function CreateJobForm() {
                 size="sm"
                 className="flex-1 flex items-center gap-1 text-sm bg-primary text-white hover:bg-primary/90"
               >
-
-                {isSubmitting ? "Posting..." : "Create Post"}
+                {isSubmitting ? "Posting..." : "Post Job"}
               </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="flex-1 flex items-center gap-1 text-sm text-muted-foreground hover:text-black"
-              ></Button>
+
             </div>
           </CardFooter>
         </>

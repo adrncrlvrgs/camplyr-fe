@@ -25,7 +25,7 @@ export default function JobCreate() {
         <DialogTitle>Create a Job</DialogTitle>
 
         <DialogDescription>
-          Share your thoughts, ideas, or updates.
+          Enter detail info about the job
         </DialogDescription>
 
         <div className="mt-4"><CreateJobForm /></div>
