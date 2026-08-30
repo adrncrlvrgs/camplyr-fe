@@ -23,7 +23,7 @@ export default function JobDetails({ job }: JobDetailsProps) {
   }
 
   return (
-    <aside className="hidden w-[420px] shrink-0 p-6 xl:block xl:sticky xl:top-0 xl:max-h-dvh xl:overflow-y-auto">
+    <aside className="hidden w-[420px] shrink-0 p-6 xl:block xl:sticky xl:top-0 xl:max-h-dvh xl:overflow-y-auto bg-[#fcfcfc]">
       <div className="flex items-start gap-4">
         <div className="flex size-12 shrink-0 items-center justify-center rounded-lg border border-neutral-200 bg-neutral-50 text-base font-semibold text-neutral-600">
           {job.company.charAt(0)}
