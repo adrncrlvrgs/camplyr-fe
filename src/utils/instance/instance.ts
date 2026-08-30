@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 
 const apiUrl = import.meta.env.VITE_APP_API_BASE_URL;
 
-const getToken = () => Cookies.get("accessToken");
+const getToken = () => Cookies.get("token");
 
 const instance: AxiosInstance = axios.create({
   baseURL: apiUrl,
