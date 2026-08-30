@@ -63,7 +63,7 @@ export default function JobList({ jobs, selectedJobId, onSelectJob }: JobListPro
                 type="button"
                 onClick={() => onSelectJob(job.id)}
                 aria-pressed={isSelected}
-                className={`w-full rounded-xl border p-5 text-left transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-sm motion-reduce:transition-none motion-reduce:hover:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${
+                className={`bg-[#fcfcfc] w-full rounded-xl border p-5 text-left transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-sm motion-reduce:transition-none motion-reduce:hover:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${
                   isSelected
                     ? "border-primary bg-primary/[0.04] shadow-sm"
                     : "border-neutral-200 hover:border-primary/60 hover:bg-muted/40"
