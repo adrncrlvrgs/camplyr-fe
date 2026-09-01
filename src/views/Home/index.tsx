@@ -188,7 +188,7 @@ const Index = () => {
                 </DialogDescription>
               </DialogHeader>
 
-              <ApplicationForm post={selectedPost} />
+              {/* <ApplicationForm job={selectedPost} /> */}
             </>
           ) : selectedPost ? (
             <>
