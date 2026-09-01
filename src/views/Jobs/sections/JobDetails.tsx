@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Bookmark, BriefcaseBusiness } from "lucide-react";
+import ApplicationForm from "@/modules/application/views/ApplicantForm";
 import type { Job } from "./data";
 
 type JobDetailsProps = {
@@ -47,7 +48,7 @@ export default function JobDetails({ job }: JobDetailsProps) {
       </div>
 
       <div className="mt-6 flex gap-3">
-        <Button className="flex-1">Apply Now</Button>
+        <ApplicationForm job={job}/>
 
         <Button variant="outline" onClick={() => setIsSaved((prev) => !prev)} aria-pressed={isSaved}>
           <Bookmark size={16} className={isSaved ? "fill-current" : undefined} />

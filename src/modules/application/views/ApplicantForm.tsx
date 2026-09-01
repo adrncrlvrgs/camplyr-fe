@@ -1,19 +1,32 @@
 import { Button } from "@/components/ui/Button";
 import { FileText, Send } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/Dialog";
 
-type FeedPost = {
-  id: number;
-  type: "JOB" | "POST";
-  title?: string;
-  company?: string;
-  location?: string;
+import { Job } from "@/views/Jobs/sections/data";
+
+type JobDetailsProps = {
+  job: Job | null;
 };
 
-type ApplicationFormProps = {
-  post: FeedPost;
-};
+// type FeedPost = {
+//   id: string;
+//   type: "JOB" | "POST";
+//   title?: string;
+//   company?: string;
+//   location?: string;
+// };
 
-const ApplicationForm = ({ post }: ApplicationFormProps) => {
+// type ApplicationFormProps = {
+//   post: FeedPost;
+// };
+
+const ApplicationForm = ({ job }: JobDetailsProps) => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -23,7 +36,23 @@ const ApplicationForm = ({ post }: ApplicationFormProps) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+
+    <Dialog>
+      <DialogTrigger asChild>
+        <div className="space-y-6 mb-2">
+          <Button className="flex-1">Apply Now</Button>
+        </div>
+      </DialogTrigger>
+
+      <DialogContent className="sm:max-w-xl">
+        <DialogTitle>title here</DialogTitle>
+
+        <DialogDescription>
+          Enter detail info about the job
+        </DialogDescription>
+
+        <div className="mt-4">
+          <form onSubmit={handleSubmit} className="flex flex-col gap-5">
 
       {/* Job information */}
       <div className="rounded-lg border bg-muted/30 p-4">
@@ -31,16 +60,16 @@ const ApplicationForm = ({ post }: ApplicationFormProps) => {
           <FileText size={18} />
 
           <h3 className="font-semibold">
-            {post.title}
+            {job?.title}
           </h3>
         </div>
 
         <p className="mt-1 text-sm text-muted-foreground">
-          {post.company}
+          {job?.company}
         </p>
 
         <p className="text-sm text-muted-foreground">
-          {post.location}
+          {job?.location}
         </p>
       </div>
 
@@ -115,6 +144,10 @@ const ApplicationForm = ({ post }: ApplicationFormProps) => {
         Submit Application
       </Button>
     </form>
+        </div>
+      </DialogContent>
+    </Dialog>
+
   );
 };
 
