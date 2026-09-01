@@ -15,7 +15,7 @@ import CardProfile from "./sections/CardProfile";
 import CardConnectionRecommendation from "./sections/CardConnectionRecommendation";
 import CardAnalytics from "./sections/CardAnalytics";
 import CardWritePost from "./sections/CardWritePost";
-import ApplicationForm from "@/modules/application/views/ApplicantForm";
+// import ApplicationForm from "@/modules/application/views/ApplicantForm";
 
 type PostType = "JOB" | "POST";
 
