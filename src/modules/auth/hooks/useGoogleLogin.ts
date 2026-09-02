@@ -11,7 +11,7 @@ const useGoogleLoginHook = (loginAuthContext: (userData: User) => void = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const userGoogleLog2 = async( response: CredentialResponse) => {
-    //console.log(response.credential);
+    console.log(response.credential);
     try {
         setIsLoading(true);
         console.log(isLoading)
