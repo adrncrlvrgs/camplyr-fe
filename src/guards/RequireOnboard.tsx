@@ -3,7 +3,6 @@ import { useAuth } from "@/context/AuthContext";
 
 export function RequireOnboard() {
   const { user, isLoading } = useAuth();
-  console.log(user?.isOnboarded);
 
   if (isLoading) {
     return <div>Loading...</div>;

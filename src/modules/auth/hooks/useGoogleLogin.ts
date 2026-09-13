@@ -14,12 +14,12 @@ const useGoogleLoginHook = (loginAuthContext: (userData: User) => void = () => {
     console.log(response.credential);
     try {
         setIsLoading(true);
-        console.log(isLoading)
+        // console.log(isLoading)
         const { userData } = await loginUserGoogle({
           credentials: response.credential
         }) as { userData : User};
         loginAuthContext(userData);
-        console.log(isLoading)
+        // console.log(isLoading)
         setUser(userData);
       } catch (err) {
         const errorObj = err instanceof Error ? err : new Error(String(err));

@@ -1,10 +1,5 @@
-// src/hooks/useSubmitSeekerOnboarding.ts
-
 import { Dispatch, SetStateAction, useState } from "react";
-// import { onboardSeeker } from "@/utils/api/onboard.api";
-
 import {recruiterOnboardSchema, RecruiterForm} from "@/utils/validation/validation.schema";
-
 import { validateForm, FormErrors } from "@/utils/validation/validation.util";
 
 type UseSubmitRecruiterOnboardingProps = {

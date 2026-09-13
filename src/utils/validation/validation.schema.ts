@@ -1,5 +1,6 @@
 import {z} from "zod"
 
+
 export const seekerOnboardingSchema = z.object({
   headline: z.string().trim().min(2, "Headline is required"),
   location: z.string().trim().min(2, "Location is required"),
@@ -36,3 +37,16 @@ export const jobSchema = z.object({
 });
 
 export type CreateJobInput = z.infer<typeof jobSchema>;
+
+export const createApplicationSchema = z.object({
+  coverLetter: z.string().optional(),
+  resumeUrl: z.string().url().optional(),
+});
+
+export type CreateApplicationInput = z.infer<typeof createApplicationSchema>;
+
+// export const updateApplicationStatus = z.object({
+//   status: z.nativeEnum(ApplicationStatus)
+// });
+
+// export type UpdateApplicationStatusInput = z.infer<typeof updateApplicationStatus>;

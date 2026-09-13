@@ -6,13 +6,13 @@ import {
   ReactNode,
   useCallback,
 } from "react";
-// import {useNavigate} from 'react-router-dom'
 import { User } from "@/utils/constant/types";
 import { getUser, refresh, logout } from "@/utils/api/auth.api";
+import { Button } from "@/components/ui/Button";
 
 type AuthContextValue = {
   user: User | null;
-  // isOnboarded: boolean;
+  setIsOnboarded: (value: boolean) => void;
   isLoading: boolean;
   login: (userData: User | null) => void;
   authLogout: () => Promise<void>;
@@ -30,7 +30,10 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const login = (userData: User | null) => {
     setUser(userData);
-    console.log(userData);
+  };
+
+  const setIsOnboarded = (value: boolean) => {
+    setUser((prev) => (prev ? { ...prev, isOnboarded: value } : prev));
   };
 
   const refreshAuth = useCallback(async () => {
@@ -59,20 +62,18 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   useEffect(() => {
     const initialAuth = async () => {
       setIsLoading(true);
-
       try {
         await refreshAuth();
       } finally {
         setIsLoading(false);
       }
     };
-
     initialAuth();
   }, [refreshAuth]);
 
   return (
-    <AuthContext.Provider value={{ user, isLoading, login, authLogout }}>
-      <button onClick={() => authLogout()}>logout</button>
+    <AuthContext.Provider value={{ user, isLoading, login, authLogout, setIsOnboarded }}>
+      <Button onClick={authLogout}>logout</Button>
       {children}
     </AuthContext.Provider>
   );
@@ -80,11 +81,9 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
 const useAuth = (): AuthContextValue => {
   const context = useContext(AuthContext);
-
   if (!context) {
     throw new Error("useAuth must be used inside AuthProvider");
   }
-
   return context;
 };
 

@@ -1,6 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import { RequireGuest, RequireAuth, RequireOnboard } from "@/guards";
-// import { RequireGuest, RequireAuth, RequireOnboard, RequireRoles } from "@/guards";
+import { RequireGuest, RequireAuth, RequireOnboard, RequireNotOnboarded } from "@/guards";
 import Login from "@/views/Login";
 import Onboard from "@/views/Onboard";
 import Home from "@/views/Home";
@@ -13,7 +12,10 @@ export const router = createBrowserRouter([
   {
     element: <RequireAuth />,
     children: [
-      { path: "/onboarding", element: <Onboard /> },
+       {
+        element: <RequireNotOnboarded />,
+        children: [{ path: "/onboarding", element: <Onboard /> }],
+      },
       {
         element: <RequireOnboard />,
         children: [

@@ -8,7 +8,7 @@ export function OnboardPage() {
   const handleSelectForm = (clickedAs : string) => {
     setRoleAs(clickedAs)
   }
-   console.log(roleAs)
+   //console.log(roleAs)
   return (
     <>
       {roleAs === "" && (

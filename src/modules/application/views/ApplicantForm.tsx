@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { FileText, Send } from "lucide-react";
 import {
@@ -7,37 +10,44 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/Dialog";
+import type { Jobs } from "@/utils/constant/types";
+import { useSendApplication } from "../hooks/useSendApplication";
 
-import { Job } from "@/views/Jobs/sections/data";
-
-type JobDetailsProps = {
-  job: Job | null;
+type ApplicationFormProps = {
+  job: Jobs | null;
+  onApplicationSubmitted?: () => void;
 };
 
-// type FeedPost = {
-//   id: string;
-//   type: "JOB" | "POST";
-//   title?: string;
-//   company?: string;
-//   location?: string;
-// };
+const ApplicationForm = ({ job, onApplicationSubmitted }: ApplicationFormProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const { submitApplication, isSubmitting, serverError } = useSendApplication();
 
-// type ApplicationFormProps = {
-//   post: FeedPost;
-// };
-
-const ApplicationForm = ({ job }: JobDetailsProps) => {
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!job) return;
 
-    // Later:
-    // const formData = new FormData(e.currentTarget);
-    // submitApplication(formData);
+    const formData = new FormData(e.currentTarget);
+    const resumeUrl = (formData.get("resumeUrl") as string)?.trim() || undefined;
+    const coverLetterText = (formData.get("coverLetter") as string)?.trim() || "";
+    const additionalMessage = (formData.get("message") as string)?.trim();
+
+    // Backend only stores one `coverLetter` field — fold the optional
+    // "Additional Message" into it instead of dropping it silently.
+    const coverLetter = additionalMessage
+      ? `${coverLetterText}\n\n${additionalMessage}`
+      : coverLetterText;
+
+    const success = await submitApplication({ coverLetter, resumeUrl }, job.id);
+
+    if (success) {
+      e.currentTarget.reset();
+      setIsOpen(false);
+      onApplicationSubmitted?.();
+    }
   };
 
   return (
-
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <div className="space-y-6 mb-2">
           <Button className="flex-1">Apply Now</Button>
@@ -45,109 +55,89 @@ const ApplicationForm = ({ job }: JobDetailsProps) => {
       </DialogTrigger>
 
       <DialogContent className="sm:max-w-xl">
-        <DialogTitle>title here</DialogTitle>
+        <DialogTitle>Apply to {job?.title}</DialogTitle>
 
         <DialogDescription>
-          Enter detail info about the job
+          Fill out the details below to submit your application.
         </DialogDescription>
 
         <div className="mt-4">
           <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+            {/* Job information */}
+            <div className="rounded-lg border bg-muted/30 p-4">
+              <div className="flex items-center gap-2">
+                <FileText size={18} />
+                <h3 className="font-semibold">{job?.title}</h3>
+              </div>
 
-      {/* Job information */}
-      <div className="rounded-lg border bg-muted/30 p-4">
-        <div className="flex items-center gap-2">
-          <FileText size={18} />
+              <p className="mt-1 text-sm text-muted-foreground">{job?.company.name}</p>
+              <p className="text-sm text-muted-foreground">{job?.location}</p>
+            </div>
 
-          <h3 className="font-semibold">
-            {job?.title}
-          </h3>
-        </div>
+            {/* Resume link */}
+            <div className="flex flex-col gap-2">
+              <label htmlFor="resumeUrl" className="text-sm font-medium">
+                Resume
+                <span className="ml-1 text-muted-foreground">(Optional)</span>
+              </label>
 
-        <p className="mt-1 text-sm text-muted-foreground">
-          {job?.company}
-        </p>
+              <input
+                id="resumeUrl"
+                name="resumeUrl"
+                type="url"
+                placeholder="https://drive.google.com/your-resume.pdf"
+                className="rounded-md border p-2 text-sm"
+              />
 
-        <p className="text-sm text-muted-foreground">
-          {job?.location}
-        </p>
-      </div>
+              <span className="text-xs text-muted-foreground">
+                Paste a link to your resume (Google Drive, Dropbox, personal site, etc.)
+              </span>
+            </div>
 
-      {/* Resume */}
-      <div className="flex flex-col gap-2">
-        <label
-          htmlFor="resume"
-          className="text-sm font-medium"
-        >
-          Resume
-        </label>
+            {/* Cover letter */}
+            <div className="flex flex-col gap-2">
+              <label htmlFor="coverLetter" className="text-sm font-medium">
+                Cover Letter
+              </label>
 
-        <input
-          id="resume"
-          name="resume"
-          type="file"
-          accept=".pdf,.doc,.docx"
-          required
-          className="rounded-md border p-2 text-sm"
-        />
+              <textarea
+                id="coverLetter"
+                name="coverLetter"
+                rows={7}
+                required
+                placeholder="Introduce yourself and explain why you're interested in this position..."
+                className="resize-none rounded-md border bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
+              />
+            </div>
 
-        <span className="text-xs text-muted-foreground">
-          Accepted formats: PDF, DOC, DOCX
-        </span>
-      </div>
+            {/* Additional message */}
+            <div className="flex flex-col gap-2">
+              <label htmlFor="message" className="text-sm font-medium">
+                Additional Message
+                <span className="ml-1 text-muted-foreground">(Optional)</span>
+              </label>
 
-      {/* Cover letter */}
-      <div className="flex flex-col gap-2">
-        <label
-          htmlFor="coverLetter"
-          className="text-sm font-medium"
-        >
-          Cover Letter
-        </label>
+              <textarea
+                id="message"
+                name="message"
+                rows={4}
+                placeholder="Add anything else you'd like the recruiter to know..."
+                className="resize-none rounded-md border bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
+              />
+            </div>
 
-        <textarea
-          id="coverLetter"
-          name="coverLetter"
-          rows={7}
-          required
-          placeholder="Introduce yourself and explain why you're interested in this position..."
-          className="resize-none rounded-md border bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
-        />
-      </div>
+            {serverError && (
+              <p className="text-sm text-red-600">{serverError.message}</p>
+            )}
 
-      {/* Additional message */}
-      <div className="flex flex-col gap-2">
-        <label
-          htmlFor="message"
-          className="text-sm font-medium"
-        >
-          Additional Message
-          <span className="ml-1 text-muted-foreground">
-            (Optional)
-          </span>
-        </label>
-
-        <textarea
-          id="message"
-          name="message"
-          rows={4}
-          placeholder="Add anything else you'd like the recruiter to know..."
-          className="resize-none rounded-md border bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
-        />
-      </div>
-
-      <Button
-        type="submit"
-        className="w-full gap-2"
-      >
-        <Send size={16} />
-        Submit Application
-      </Button>
-    </form>
+            <Button type="submit" className="w-full gap-2" disabled={isSubmitting}>
+              <Send size={16} />
+              {isSubmitting ? "Submitting..." : "Submit Application"}
+            </Button>
+          </form>
         </div>
       </DialogContent>
     </Dialog>
-
   );
 };
 
