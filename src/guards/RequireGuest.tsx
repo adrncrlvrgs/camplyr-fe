@@ -12,7 +12,7 @@ export function RequireGuest() {
     return <Outlet />;
   }
 
-  if (!user.isOnboarded) {
+  if (!user?.isOnboarded) {
     return <Navigate to="/onboarding" replace />;
   }
 

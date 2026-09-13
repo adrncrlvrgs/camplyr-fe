@@ -76,7 +76,7 @@ export default function RecruiterOnboarding() {
   };
 
   const nextStep = () => {
-    console.log("clicked")
+    // console.log("clicked")
     const isValid = validateCurrentStep();
 
     if (!isValid) return;

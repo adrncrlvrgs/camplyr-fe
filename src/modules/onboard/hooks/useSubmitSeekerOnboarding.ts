@@ -1,5 +1,3 @@
-// src/hooks/useSubmitSeekerOnboarding.ts
-
 import { Dispatch, SetStateAction, useState } from "react";
 import { onboardSeeker } from "@/utils/api/onboard.api";
 
@@ -9,6 +7,8 @@ import {
 } from "@/utils/validation/validation.schema";
 
 import { validateForm, FormErrors } from "@/utils/validation/validation.util";
+
+import { useAuth } from "@/context/AuthContext";
 
 type UseSubmitSeekerOnboardingProps = {
   form: SeekerForm;
@@ -24,6 +24,9 @@ export function useSubmitSeekerOnboarding({
   setStep,
 }: UseSubmitSeekerOnboardingProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isOnboardedIndicator, setIsOnboardedIndicator] =
+    useState<boolean>(false);
+  const { setIsOnboarded } = useAuth();
 
   const submitOnboarding = async () => {
     try {
@@ -56,9 +59,18 @@ export function useSubmitSeekerOnboarding({
           .filter(Boolean),
       };
 
-      // console.log(payload);
+      const response = (await onboardSeeker(payload)) as
+        | { userData?: { isOnboarded?: boolean } }
+        | undefined;
 
-      await onboardSeeker(payload);
+      const onboarded = Boolean(response?.userData?.isOnboarded);
+
+      setIsOnboardedIndicator(onboarded); 
+      console.log(response);
+
+      if (onboarded) {
+        setIsOnboarded(true);
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -67,5 +79,6 @@ export function useSubmitSeekerOnboarding({
   return {
     submitOnboarding,
     isSubmitting,
+    isOnboardedIndicator,
   };
 }
