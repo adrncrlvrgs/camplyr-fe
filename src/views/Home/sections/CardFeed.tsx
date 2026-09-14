@@ -1,7 +1,7 @@
 import { useRef, useState, type KeyboardEvent } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import CardWritePost from "../sections/CardWritePost";
-import CardPost from "@/views/Home/sections/CardPost";
+// import CardPost from "@/views/Home/sections/CardPost";
 import {
   Dialog,
   DialogContent,
