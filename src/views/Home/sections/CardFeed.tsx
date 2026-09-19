@@ -2,6 +2,7 @@ import { useRef, useState, type KeyboardEvent } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import CardWritePost from "../sections/CardWritePost";
 // import CardPost from "@/views/Home/sections/CardPost";
+import CardJob from "./CardJob";
 import {
   Dialog,
   DialogContent,
@@ -108,7 +109,7 @@ return(
                 onKeyDown={handleCardKeyDown(job)}
                 className="w-[85%] flex-shrink-0 cursor-pointer snap-start rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 sm:w-[380px]"
               >
-                {/* <CardPost post={job} /> */}
+                <CardJob jobs={job} />
               </div>
             ))}
           </div>
