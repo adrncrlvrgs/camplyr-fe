@@ -60,4 +60,18 @@ export interface Jobs {
       logoUrl: string | null;
     };
 }
+export interface Post {
+  id: string;
+  content: string;
+  imageUrl: string;
+  createdAt: string;
+  updatedAt: string;
+  user: {
+    id: string;
+    name: string;
+    username: string;
+    avatarUrl: string;
+    role: string
+  }
+}
 

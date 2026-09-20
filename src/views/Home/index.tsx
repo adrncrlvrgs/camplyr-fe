@@ -84,10 +84,8 @@ const Index = () => {
             <CardProfile />
             <CardAnalytics />
           </div>
-
           {/* FEED */}
           <CardFeed/>
-
           {/* RIGHT */}
           <div className="p-4 lg:sticky lg:top-0 lg:max-h-dvh lg:overflow-y-auto">
             <CardConnectionRecommendation />
