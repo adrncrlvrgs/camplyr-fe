@@ -1,6 +1,7 @@
 import {
   useRef,
   useState,
+  useEffect,  
   type CSSProperties,
   type KeyboardEvent,
   type ReactNode,
@@ -18,25 +19,31 @@ import {
 } from "@/components/ui/Dialog";
 import { useGetJobs } from "@/modules/jobs/hooks/useGetJobs";
 import { useGetPosts } from "@/modules/post/hooks/useGetPosts";
+import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import type { Jobs } from "@/utils/constant/types";
 import { cn } from "@/utils/lib/utils";
 
 const JOB_SKELETON_COUNT = 3;
 const POST_SKELETON_COUNT = 2;
 
-const JOB_CARD_WIDTH = "w-[85%] flex-shrink-0 sm:w-[460px]";
-
 const RAIL_FADE_MASK =
-  "linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)";
+  "linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)"; // refactor this shit
 
 const RAIL_STYLE: CSSProperties = {
+  // refactor this shit
   maskImage: RAIL_FADE_MASK,
   WebkitMaskImage: RAIL_FADE_MASK,
 };
 
-
-const Divider = ({ className }: { className?: string }) => (
-  <hr className={cn("w-full border-0 border-t border-dashed border-neutral-300", className)} />
+const Divider = (
+  { className }: { className?: string }, // refactor this shit
+) => (
+  <hr
+    className={cn(
+      "w-full border-0 border-t border-dashed border-neutral-300",
+      className,
+    )}
+  />
 );
 
 const EmptyMessage = ({ children }: { children: ReactNode }) => (
@@ -44,13 +51,13 @@ const EmptyMessage = ({ children }: { children: ReactNode }) => (
 );
 
 // Makes a div[role="button"] respond to Enter / Space like a real button.
-const onActivateKey = (action: () => void) => (event: KeyboardEvent<HTMLElement>) => {
-  if (event.key === "Enter" || event.key === " ") {
-    event.preventDefault();
-    action();
-  }
-};
-
+const onActivateKey =
+  (action: () => void) => (event: KeyboardEvent<HTMLElement>) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      action();
+    }
+  };
 
 type RailButtonProps = {
   direction: "left" | "right";
@@ -110,7 +117,7 @@ const JobsRail = ({ jobs, isLoading, onSelect }: JobsRailProps) => {
           {Array.from({ length: JOB_SKELETON_COUNT }).map((_, i) => (
             <div
               key={i}
-              className={cn("h-40 animate-pulse rounded-xl bg-neutral-100", JOB_CARD_WIDTH)}
+              className="h-40 animate-pulse rounded-xl bg-neutral-100 w-[85%] flex-shrink-0 sm:w-[460px]"
             />
           ))}
         </div>
@@ -128,10 +135,7 @@ const JobsRail = ({ jobs, isLoading, onSelect }: JobsRailProps) => {
               aria-haspopup="dialog"
               onClick={() => onSelect(job)}
               onKeyDown={onActivateKey(() => onSelect(job))}
-              className={cn(
-                "cursor-pointer snap-start rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
-                JOB_CARD_WIDTH,
-              )}
+              className="cursor-pointer snap-start rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 w-[85%] flex-shrink-0 sm:w-[460px]"
             >
               <CardJob jobs={job} />
             </div>
@@ -161,7 +165,9 @@ const JobApplyDialog = ({ job, onClose }: JobApplyDialogProps) => (
         <>
           <DialogHeader>
             <DialogTitle>Apply for {job.title}</DialogTitle>
-            <DialogDescription>Submit your application to {job.company.name}.</DialogDescription>
+            <DialogDescription>
+              Submit your application to {job.company.name}.
+            </DialogDescription>
           </DialogHeader>
 
           {/* <ApplicationForm job={job} /> */}
@@ -180,9 +186,15 @@ const JobsSection = () => {
   return (
     <>
       {showRail ? (
-        <JobsRail jobs={jobs} isLoading={isLoadingJob} onSelect={setSelectedJob} />
+        <JobsRail
+          jobs={jobs}
+          isLoading={isLoadingJob}
+          onSelect={setSelectedJob}
+        />
       ) : (
-        <EmptyMessage>No jobs available right now. Check back soon.</EmptyMessage>
+        <EmptyMessage>
+          No jobs available right now. Check back soon.
+        </EmptyMessage>
       )}
 
       <JobApplyDialog job={selectedJob} onClose={() => setSelectedJob(null)} />
@@ -190,33 +202,105 @@ const JobsSection = () => {
   );
 };
 
-
 const PostsSkeleton = () => (
   <div className="flex w-full flex-col gap-4">
     {Array.from({ length: POST_SKELETON_COUNT }).map((_, i) => (
-      <div key={i} className="h-40 w-full animate-pulse rounded-2xl bg-neutral-100" />
+      <div
+        key={i}
+        className="h-40 w-full animate-pulse rounded-2xl bg-neutral-100"
+      />
     ))}
   </div>
 );
 
 const PostsSection = () => {
-  const { posts, isLoadingPost } = useGetPosts();
+  const {
+    posts,
+    isLoadingPost,
+    isFetchingNextPage,
+    hasNextPage,
+    fetchNextPage,
+    serverError,
+  } = useGetPosts();
 
-  if (isLoadingPost) return <PostsSkeleton />;
+  const listRef = useRef<HTMLDivElement>(null);
+
+  const virtualizer = useWindowVirtualizer({
+    count: posts.length,
+    estimateSize: () => 220,
+    overscan: 5,
+    scrollMargin: listRef.current?.offsetTop ?? 0,
+  });
+
+  const virtualItems = virtualizer.getVirtualItems();
+  const lastItemIndex = virtualItems[virtualItems.length - 1]?.index;
+
+  useEffect(() => {
+    if (
+      lastItemIndex !== undefined &&
+      lastItemIndex >= posts.length - 1 &&
+      hasNextPage &&
+      !isFetchingNextPage
+    ) {
+      fetchNextPage();
+    }
+  }, [lastItemIndex, posts.length, hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+  if (isLoadingPost) {
+    return <PostsSkeleton />;
+  }
+
+  if (serverError) {
+    return (
+      <EmptyMessage>
+        Something went wrong loading posts. Please try again.
+      </EmptyMessage>
+    );
+  }
 
   if (posts.length === 0) {
-    return <EmptyMessage>No posts yet. Be the first to share something.</EmptyMessage>;
+    return (
+      <EmptyMessage>
+        No posts yet. Be the first to share something.
+      </EmptyMessage>
+    );
   }
 
   return (
-    <div className="flex w-full flex-col gap-4">
-      {posts.map((post) => (
-        <CardPost key={post.id} post={post} />
-      ))}
+    <div ref={listRef} className="w-full">
+      <div
+        style={{
+          height: virtualizer.getTotalSize(),
+          width: "100%",
+          position: "relative",
+        }}
+      >
+        {virtualItems.map((virtualItem) => {
+          const post = posts[virtualItem.index];
+          return (
+            <div
+              key={post.id}
+              data-index={virtualItem.index}
+              ref={virtualizer.measureElement}
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                transform: `translateY(${virtualItem.start - virtualizer.options.scrollMargin}px)`,
+                paddingBottom: 16,
+              }}
+            >
+              <CardPost post={post} />
+            </div>
+          );
+        })}
+      </div>
+
+      {isFetchingNextPage && <PostsSkeleton />}
     </div>
   );
 };
-
 
 const CardFeed = () => (
   <div className="flex flex-col items-center gap-4 p-4 lg:col-span-2 lg:border-r lg:border-dashed lg:border-neutral-300">

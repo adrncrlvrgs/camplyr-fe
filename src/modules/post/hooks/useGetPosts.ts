@@ -1,34 +1,37 @@
-import { useState, useEffect, useCallback } from "react";
+// hooks/useGetPosts.ts
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { useMemo } from "react";
 import { Post } from "@/utils/constant/types";
-import { getAllPost } from "@/utils/api/post.apt";
+import { getAllPost } from "@/utils/api/post.api";
 
-export function useGetPosts() {
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [isLoadingPost, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<Error | null>(null);
+export function useGetPosts(limit = 10) {
+  const query = useInfiniteQuery({
+    queryKey: ["posts", limit],
+    queryFn: ({ pageParam }) => getAllPost({ cursor: pageParam, limit }),
+    initialPageParam: undefined as string | undefined,
+    getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
+  });
 
-  const fetchPosts = useCallback(async (): Promise<void> => {
-    try {
-      setIsLoading(true);
-      setError(null);
-      const data = await getAllPost();
-      setPosts(data);
-    } catch (err) {
-      const errorObj = err instanceof Error ? err : new Error(String(err));
-      setError(errorObj);
-    } finally {
-      setIsLoading(false);
-    }
-  },[]);
-
-  useEffect(()=>{
-    fetchPosts();
-  }, [fetchPosts])
+  // dedupe by id — cheap insurance against any overlapping/duplicate page
+  // fetch, regardless of what triggered it. useMemo so this only re-runs
+  // when the underlying query data actually changes, not on every render.
+  const posts: Post[] = useMemo(() => {
+    const flat = query.data?.pages.flatMap((page) => page.items.flat()) ?? [];
+    const seen = new Set<string>();
+    return flat.filter((post) => {
+      if (seen.has(post.id)) return false;
+      seen.add(post.id);
+      return true;
+    });
+  }, [query.data]);
 
   return {
     posts,
-    isLoadingPost,
-    serverError: error,
-    refetchJobs: fetchPosts,
+    isLoadingPost: query.isLoading,
+    isFetchingNextPage: query.isFetchingNextPage,
+    hasNextPage: query.hasNextPage,
+    fetchNextPage: query.fetchNextPage,
+    serverError: query.isError ? (query.error as Error) : null,
+    refetchPosts: query.refetch,
   };
 }

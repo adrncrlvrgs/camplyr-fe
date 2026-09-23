@@ -75,3 +75,9 @@ export interface Post {
   }
 }
 
+export type PaginatedPostsResponse<T> = {
+    items: T[];
+    nextCursor: string | null;
+    hasNextPage: boolean;
+};
+
