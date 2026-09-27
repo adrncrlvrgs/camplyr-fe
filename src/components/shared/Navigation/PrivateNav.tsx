@@ -1,4 +1,4 @@
-import { Home, Users, Briefcase, MessageSquare, Bell } from "lucide-react";
+import { Home, Users, Briefcase, Bookmark } from "lucide-react";
 import PageHeader from "../Layout/PageHeader";
 
 const PrivateNav = () => {
@@ -10,10 +10,10 @@ const PrivateNav = () => {
     },
     { icon: <Briefcase className="w-5 h-5 mx-auto mb-1" />, label: "Jobs", nav: "/jobs"  },
     {
-      icon: <MessageSquare className="w-5 h-5 mx-auto mb-1" />,
-      label: "Messaging",
+      icon: <Bookmark className="w-5 h-5 mx-auto mb-1" />,
+      label: "Saved",
     },
-    { icon: <Bell className="w-5 h-5 mx-auto mb-1" />, label: "Notification" },
+    // { icon: <Bookmark className="w-5 h-5 mx-auto mb-1" />, label: "Notification" },
   ];
   return (
     <PageHeader>

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { addPost } from "@/utils/api/post.apt";
+import { addPost } from "@/utils/api/post.api";
 import { PostInput } from "@/utils/validation/validation.schema";
 
 export function useAddPost() {

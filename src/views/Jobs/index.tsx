@@ -10,7 +10,7 @@ import { useGetJobs } from "@/modules/jobs/hooks/useGetJobs";
 import { useGetApplications } from "@/modules/jobs/hooks/useGetApplications";
 
 export default function JobsPage() {
-  const { jobs, isLoading: isLoadingJobs } = useGetJobs();
+  const { jobs, isLoadingJob: isLoadingJobs } = useGetJobs();
   const [selectedJobId, setSelectedJobId] = useState<string>("");
   const selectedJob = jobs.find((job) => job.id === selectedJobId) ?? jobs[0] ?? null;
 

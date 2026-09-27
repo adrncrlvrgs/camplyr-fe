@@ -4,7 +4,7 @@ import { getAllJobs } from "@/utils/api/job.api";
 
 export function useGetJobs() {
   const [jobs, setJobs] = useState<Jobs[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoadingJob, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
 
   const fetchJobs = useCallback(async (): Promise<void> => {
@@ -27,7 +27,7 @@ export function useGetJobs() {
 
   return {
     jobs,
-    isLoading,
+    isLoadingJob,
     serverError: error,
     refetchJobs: fetchJobs,
   };
