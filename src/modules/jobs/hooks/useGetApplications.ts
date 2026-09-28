@@ -12,7 +12,7 @@ export function useGetApplications() {
       setIsLoading(true);
       setError(null);
       const data = await getSeekerApplications();
-      setApplications(data); // no cast needed
+      setApplications(data);
     } catch (err) {
       const errorObj = err instanceof Error ? err : new Error(String(err));
       setError(errorObj);
