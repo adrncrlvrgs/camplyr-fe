@@ -9,3 +9,8 @@ export const getAllJobs = async(): Promise<Jobs[]> =>{
    const result = await api<ApiResponse<Jobs[]>>("GET", "/job/allJobs");
   return result.data;
 }
+
+export const getJobById = async(jobId:string): Promise<Jobs> =>{
+   const result = await api<ApiResponse<Jobs>>("GET", `/job/${jobId}`);
+  return result.data;
+}

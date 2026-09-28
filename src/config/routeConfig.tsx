@@ -3,7 +3,8 @@ import { RequireGuest, RequireAuth, RequireOnboard, RequireNotOnboarded } from "
 import Login from "@/views/Login";
 import Onboard from "@/views/Onboard";
 import Home from "@/views/Home";
-import Jobs from "@/views/Jobs"
+import Jobs from "@/views/Jobs";
+import Job from "@/views/Job";
 export const router = createBrowserRouter([
   {
     element: <RequireGuest />,
@@ -20,7 +21,8 @@ export const router = createBrowserRouter([
         element: <RequireOnboard />,
         children: [
             { path: "/home", element: <Home /> },
-            { path: "/jobs", element: <Jobs /> }
+            { path: "/jobs", element: <Jobs /> },
+            {path: "/job/:jobId", element: <Job/>}
         ],
       },
     ],
