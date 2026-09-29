@@ -6,13 +6,13 @@ import { useAuth } from "@/context/AuthContext";
 
 export default function GoogleLoginButton() {
   const { login } = useAuth();
-  const { error, userGoogleLog2 } = useGoogleLoginHook(login);
+  const { error, userGoogleLog } = useGoogleLoginHook(login);
 
   return (
     <div className="space-y-2">
       <GoogleLogin
         onSuccess={async (response: CredentialResponse) => {
-          await userGoogleLog2(response);
+          await userGoogleLog(response);
         }}
         onError={() => console.error(error)}
       />

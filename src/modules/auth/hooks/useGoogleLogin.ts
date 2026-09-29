@@ -10,7 +10,7 @@ const useGoogleLoginHook = (loginAuthContext: (userData: User) => void = () => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const userGoogleLog2 = async( response: CredentialResponse) => {
+  const userGoogleLog = async( response: CredentialResponse) => {
     try {
         setIsLoading(true);
         const { userData } = await loginUserGoogle({
@@ -26,7 +26,7 @@ const useGoogleLoginHook = (loginAuthContext: (userData: User) => void = () => {
       }
   }
 
-  return { user, error, isLoading, userGoogleLog2 };
+  return { user, error, isLoading, userGoogleLog };
 };
 
 export { useGoogleLoginHook };

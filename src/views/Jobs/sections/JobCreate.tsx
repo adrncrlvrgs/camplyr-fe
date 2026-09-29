@@ -8,7 +8,7 @@ import {
   DialogDescription,
 } from "@/components/ui/Dialog";
 
-import CreateJobForm from "@/modules/jobs/views/CreateJobForm";
+import CreateJobForm from "@/modules/jobs/components/CreateJobForm";
 
 export default function JobCreate() {
   return (

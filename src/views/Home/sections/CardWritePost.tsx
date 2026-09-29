@@ -1,6 +1,6 @@
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
-import CreatePostForm from "@/modules/post/views/CreatePost";
+import CreatePostForm from "@/modules/post/components/CreatePost";
 
 import {
   Dialog,

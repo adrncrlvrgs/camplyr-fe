@@ -1,7 +1,7 @@
 import { cn } from "@/utils/lib/utils";
 import { Card, CardContent } from "@/components/ui/Card";
 import gif from "@/assets/camplyr.gif";
-import GoogleLoginButton from "../../modules/auth/views/GoogleLogin";
+import GoogleLoginButton from "../../modules/auth/components/GoogleLogin";
 
 export function LoginForm({
   className,

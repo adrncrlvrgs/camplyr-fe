@@ -3,9 +3,10 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Bookmark, BriefcaseBusiness, CheckCircle2 } from "lucide-react";
-import ApplicationForm from "@/modules/application/views/ApplicantForm";
+// import ApplicationForm from "@/modules/application/components/ApplicantForm";
 import type { Jobs, Application } from "@/utils/constant/types";
 import { formatJobType, formatSalaryRange, formatRelativeTime } from "@/utils/constant/job-format";
+import { useNavigate } from "react-router-dom";
 
 type JobDetailsProps = {
   job: Jobs | null;
@@ -14,8 +15,10 @@ type JobDetailsProps = {
   onApplicationSubmitted?: () => void;
 };
 
-export default function JobDetails({ job, applications, isLoadingApplications, onApplicationSubmitted  }: JobDetailsProps) {
+export default function JobDetails({ job, applications, isLoadingApplications }: JobDetailsProps) {
   const [isSaved, setIsSaved] = useState(false);
+
+  const navigate = useNavigate();
 
   if (!job) {
     return (
@@ -61,7 +64,13 @@ export default function JobDetails({ job, applications, isLoadingApplications, o
             Already Applied
           </Button>
         ) : (
-          <ApplicationForm job={job} onApplicationSubmitted={onApplicationSubmitted} />
+          // <ApplicationForm job={job} onApplicationSubmitted={onApplicationSubmitted} />
+
+          <Button onClick={()=>{
+            navigate(`/job/${job.id}`)
+          }}>
+            Apply now
+          </Button>
         )}
 
         <Button variant="outline" onClick={() => setIsSaved((prev) => !prev)} aria-pressed={isSaved}>
