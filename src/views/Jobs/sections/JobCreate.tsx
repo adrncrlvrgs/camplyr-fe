@@ -21,7 +21,7 @@ export default function JobCreate() {
         </div>
       </DialogTrigger>
 
-      <DialogContent className="sm:max-w-xl">
+      <DialogContent className="sm:max-w-4xl">
         <DialogTitle>Create a Job</DialogTitle>
 
         <DialogDescription>
