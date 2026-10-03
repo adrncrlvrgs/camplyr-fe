@@ -42,9 +42,7 @@ export async function api<T = unknown>(
   if (method === "GET") _options.params = data;
   else _options.data = data;
 
-  const response: T = await instance(_options);
-
-  return response;
+  return (await instance(_options)) as T;
 }
 
 export default instance;
