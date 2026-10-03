@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { BriefcaseBusiness, MapPin, Search, SlidersHorizontal } from "lucide-react";
 import type { Jobs } from "@/utils/constant/types";
-import { formatJobType, formatSalaryRange, formatRelativeTime, isRecentlyPosted } from "@/utils/constant/job-format";
+import { formatJobType, formatSalaryRange, formatRelativeTime, isRecentlyPosted } from "@/utils/constant/jobType";
 
 type JobListProps = {
   jobs: Jobs[];
