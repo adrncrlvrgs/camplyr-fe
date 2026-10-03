@@ -11,16 +11,16 @@ import { validateForm, FormErrors } from "@/utils/validation/validation.util";
 import { useSubmitRecruiterOnboarding } from "../hooks/useSubmitRecruiterOnboard";
 
 const initialForm: RecruiterForm = {
-  position: "",
   companyName: "",
+  position: "",
   website: "",
   location: "",
   description: "",
 };
 
 const stepFields: (keyof RecruiterForm)[] = [
-  "position",
   "companyName",
+  "position",
   "website",
   "location",
   "description",
@@ -67,16 +67,23 @@ export default function RecruiterOnboarding() {
 
     if (!result.success) {
       const currentFieldError = result.errors[currentField];
-      setErrors({
+
+      if(currentFieldError){
+        setErrors({
         [currentField]: currentFieldError,
       } as FormErrors<RecruiterForm>);
 
       return false;
+      }
+      
     }
+    
+    setErrors({});
+    return true;
   };
 
   const nextStep = () => {
-    // console.log("clicked")
+    console.log("clicked")
     const isValid = validateCurrentStep();
 
     if (!isValid) return;

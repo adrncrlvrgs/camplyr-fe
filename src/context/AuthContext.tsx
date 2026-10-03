@@ -39,6 +39,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   const refreshAuth = useCallback(async () => {
     try {
       const { userData } = (await getUser()) as { userData: User };
+      // console.log(userData)
       setUser(userData);
     } catch {
       try {

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/Button";
 import { Bookmark, BriefcaseBusiness, CheckCircle2 } from "lucide-react";
 // import ApplicationForm from "@/modules/application/components/ApplicantForm";
 import type { Jobs, Application } from "@/utils/constant/types";
-import { formatJobType, formatSalaryRange, formatRelativeTime } from "@/utils/constant/job-format";
+import { formatJobType, formatSalaryRange, formatRelativeTime } from "@/utils/constant/jobType";
 import { useNavigate } from "react-router-dom";
 
 type JobDetailsProps = {

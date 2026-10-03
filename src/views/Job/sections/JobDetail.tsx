@@ -4,7 +4,7 @@ import {
   formatJobType,
   formatSalaryRange,
   formatRelativeTime,
-} from "@/utils/constant/job-format";
+} from "@/utils/constant/jobType";
 
 type JobDetailProps = {
   job: Jobs;
